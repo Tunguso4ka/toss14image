@@ -63,7 +63,8 @@ function update_papercode()
     for(var i = 0; i < image_data.data.length; i += 4)
     {
         var color = to_hex_color(image_data.data.slice(i, i + 4));
-        if (i % canvas.width == 0 && i != 0)
+
+        if (((i / 4) % canvas.width) == 0 && (i != 0))
             text_papercode.textContent += "\n";
         if (previous_color != color)
             text_papercode.textContent += `[color=#${color}]`;
