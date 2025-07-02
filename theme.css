@@ -35,46 +35,41 @@ button:hover {
     color: var(--light);
 }
 
-#container_main {
-    overflow: hidden;
-}
-
-.container_child {
-    border: 1px solid var(--light);
-    margin: 5px;
-}
-
-.container_child p {
-    overflow-y: scroll;
-    white-space: pre-line;
-    background-color: var(--light);
-    color: var(--dark);
-    margin: 0em;
-    padding: 1em;
-}
-
-.container_buttons {
-    display: inline-flex;
+.buttons {
+    display: flex;
     margin: 0px 3px;
 }
 
-.container_buttons * {
+.buttons * {
     margin: 0px 2px;
     align-content: center;
 }
 
-#coloredit {
-    min-width: 9ch;
-    background-color: var(--light);
-    padding: 0em 1em;
-    color: var(--dark);
+.content {
+    margin: 1em 3px;
+    display: flex;
 }
 
-#coloredit:before {
-    content: "#";
-}
-
-canvas {
-    zoom: 15;
+#canvas_drawing {
     image-rendering: pixelated;
+    background-color: var(--light);
+    zoom: 15;
+    height: 1%;
+}
+
+#input_color {
+    background-color: var(--light);
+    border: 1px solid var(--light);
+    border-radius: 2px;
+    height: auto;
+    cursor: pointer;
+}
+
+#text_papercode {
+    overflow: scroll;
+    white-space: pre-line;
+    background-color: var(--light);
+    color: var(--dark);
+    margin: 0em 1em;
+    padding: 1em;
 }

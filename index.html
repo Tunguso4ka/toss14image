@@ -18,39 +18,33 @@
       <script type="text/javascript" src="logic.js"></script>
     </head>
     <body>
-        <div id="container_main">
-            <div class="container_buttons">
-                <button id="button_copy" title="Copy to clipboard" onclick="copy()">Copy to clipboard</button>
-                <button id="button_toggle_rgb" title="Toggle RGB/RRGGBB" onclick="toggle_rgb()" style="width: 7ch">#RGB</button>
-                <input type="file" id="input_image" accept=".png,.avif,.jpg,.jpeg,.jxl,.webp"/>
-            </div>
-            <div class="container_child">
-                <p id="text_papercode" contenteditable>Paste your image.</p>
-            </div>
-            <div class="container_child">
-                <canvas id="canvas_drawing" width="15" height="15">Your browser doesn't support canvas, or you toggled it off</canvas>
-            </div>
-            <!--
-            <div class="container_buttons">
-                <button id="button_draw_pen" title="Pen">✏️</button>
-                <button id="button_draw_pip" title="Pipette">a</button>
-                <input type="color" id="input_color" value="#000000" />
-                <p id="text_coloredit" title="HEX RGB Color" contenteditable>000000</p>
-            </div>
-            /-->
+        <div class="buttons">
+            <button id="button_copy" title="Copy to clipboard" onclick="copy()">Copy to clipboard</button>
+            <button id="button_toggle_rgb" title="Toggle RGB/RRGGBB" onclick="toggle_rgb()" style="width: 7ch">#RGB</button>
+            <input type="color" id="input_color" value="#00000000"/>
+            <input type="file" id="input_image" accept=".png,.avif,.jpg,.jpeg,.jxl,.webp"/>
+            <p id="text_imageinfo"></p>
+        </div>
+        <div class="content">
+            <canvas id="canvas_drawing" oncontextmenu="return false;" width="21" height="21">Your browser doesn't support canvas, or you toggled it off</canvas>
+            <p id="text_papercode" contenteditable>Paste your image.</p>
+        </div>
         <div>
-        <p>Some paper facts:</p>
-        <ul>
-            <li>SS14 Paper supports upto 10 000 symbols per paper. (Including tags)</li>
-            <li>SS14 Paper can show upto 43 symbols per line. (Does not include tags)</li>
-            <li>You actually don't need to close tags for them to work.</li>
-            <li>Transparent pixels can be achieved either via [mono], or via [color=#0000].</li>
-        </ul>
-        <p>How to use:</p>
-        <ol style="">
-            <li>Get an image (screenshot, extract, create)</li>
-            <li>Crop it (21px horizontal is recommended maximum)</li>
-            <li>Paste it there (Or open).</li>
-        </ol>
+            <p>Some paper facts:</p>
+            <ul>
+                <li>SS14 Paper supports upto 10 000 symbols per paper. (Including tags)</li>
+                <li>SS14 Paper can show upto 43 symbols per line. (Does not include tags)</li>
+                <li>You actually don't need to close tags for them to work.</li>
+                <li>Transparent pixels can be achieved either via [mono], or via [color=#0000].</li>
+                <li>UI Scaling breaks paper rendering a little.</li>
+            </ul>
+            <p>How to use:</p>
+            <ol style="">
+                <li>Get an image (screenshot, extract, create)</li>
+                <li>Crop it (21px horizontal is recommended maximum)</li>
+                <li>Paste it there (Or open).</li>
+                <li>You can change colors via LMB and copy colors via RMB. (Color picker doesnt support transparent colors, blame Web3 Foundation)</li>
+            </ol>
+        </div>
     <body/>
 </html>
