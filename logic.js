@@ -32,7 +32,9 @@ document.addEventListener('DOMContentLoaded', function()
 
     canvas = document.getElementById("canvas_drawing");
     ctx = canvas.getContext('2d');
-    canvas.addEventListener('mousedown', on_mousedown);
+    canvas.addEventListener('mousedown', draw);
+    // TODO touch start
+    canvas.addEventListener('mousemove', draw);
 
 }, false);
 
@@ -41,6 +43,11 @@ function on_new_image()
     image.src = URL.createObjectURL(input_image.files[0]);
     image.onload = function()
     {
+        if (image.width > 100 || image.height > 100)
+        {
+            alert(`Your image is too large, crop it first: ${image.width}x${image.height}\n(Look at #How to use)`);
+            return;
+        }
         requestAnimationFrame(update_canvas);
     }
 }
@@ -119,23 +126,23 @@ function toggle_rgb()
     update_papercode();
 }
 
-function on_mousedown(e)
+function draw(e)
 {
     e.preventDefault();
-    var rect = canvas.getBoundingClientRect();
+    if (e.buttons == 0)
+        return;
+
     var point = { x: Math.floor(e.offsetX / 15),
                   y: Math.floor(e.offsetY / 15)};
 
-    console.log(point);
-
     const pixel = ctx.getImageData(point.x, point.y, 1, 1);
-    if (e.button == 0)
+    if (e.buttons == 1)
     {
         update_data(pixel.data, color_selected.slice(1));
         ctx.putImageData(pixel, point.x, point.y);
         update_papercode();
     }
-    else if (e.button == 2)
+    else if (e.buttons == 2)
     {
         color_selected = rgb_to_hex(pixel.data, true);
         input_color.value = color_selected;
