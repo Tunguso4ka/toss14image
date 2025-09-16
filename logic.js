@@ -6,11 +6,13 @@ var image = document.createElement("img");
 var input_image;
 var input_color;
 
-var text_papercode;
 var text_imageinfo;
+var text_papercode;
 
 var canvas;
 var ctx;
+
+var papercode;
 
 document.addEventListener('DOMContentLoaded', function()
 {
@@ -27,8 +29,8 @@ document.addEventListener('DOMContentLoaded', function()
         color_selected = input_color.value;
     });
 
-    text_papercode = document.getElementById("text_papercode");
     text_imageinfo = document.getElementById("text_imageinfo");
+    text_papercode = document.getElementById("text_papercode");
 
     canvas = document.getElementById("canvas_drawing");
     ctx = canvas.getContext('2d');
@@ -77,23 +79,25 @@ function update_data(data, color)
 function update_papercode()
 {
     var image_data = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    text_imageinfo.textContent = `${image_data.width}px:${image_data.height}px`
 
     var previous_color = "";
 
-    text_papercode.textContent = "";
+    papercode = "";
     for(var i = 0; i < image_data.data.length; i += 4)
     {
         var color = rgb_to_hex(image_data.data.slice(i, i + 4));
 
         if (((i / 4) % canvas.width) == 0 && (i != 0))
-            text_papercode.textContent += "\n";
+            papercode += "\n";
         if (previous_color != color)
-            text_papercode.textContent += `[color=${color}]`;
-        text_papercode.textContent += "██";
+            papercode += `[color=${color}]`;
+        papercode += "██";
 
         previous_color = color;
     }
+
+    text_imageinfo.textContent = `${image_data.width}px:${image_data.height}px; ${papercode.length} symbols;`
+    text_papercode.textContent = papercode;
 }
 
 function update_canvas()
@@ -110,7 +114,7 @@ function update_canvas()
 
 function copy()
 {
-    navigator.clipboard.writeText(text_papercode.textContent);
+    navigator.clipboard.writeText(papercode);
     console.log("Copied the text!");
 }
 
@@ -132,8 +136,8 @@ function draw(e)
     if (e.buttons == 0)
         return;
 
-    var point = { x: Math.floor(e.offsetX / 15),
-                  y: Math.floor(e.offsetY / 15)};
+    var point = { x: Math.floor(e.offsetX / 20),
+                  y: Math.floor(e.offsetY / 20)};
 
     const pixel = ctx.getImageData(point.x, point.y, 1, 1);
     if (e.buttons == 1)
