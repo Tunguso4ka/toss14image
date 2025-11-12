@@ -15,6 +15,7 @@ var ctx;
 var papercode;
 
 var changes = [];
+var history_position = -1;
 
 document.addEventListener('DOMContentLoaded', function()
 {
@@ -39,6 +40,9 @@ document.addEventListener('DOMContentLoaded', function()
     ctx = canvas.getContext('2d');
     canvas.addEventListener('mousedown', draw);
     canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', draw_stop);
+
+    save_state('Original state');
 
 }, false);
 
@@ -104,8 +108,6 @@ function update_papercode()
 
 function update_canvas()
 {
-    save_state('canvas update');
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     canvas.width = image.naturalWidth;
     canvas.height = image.naturalHeight;
@@ -114,6 +116,8 @@ function update_canvas()
     ctx.drawImage(image, 0, 0);
 
     update_papercode();
+
+    save_state('Image loaded');
 }
 
 function copy()
@@ -150,8 +154,6 @@ function draw(e)
     const pixel = ctx.getImageData(point.x, point.y, 1, 1);
     if (e.buttons == 1)
     {
-        if (e.movementX == 0 && e.movementY == 0)
-            save_state('pixel change');
         update_data(pixel.data, color_selected.slice(1));
         ctx.putImageData(pixel, point.x, point.y);
         update_papercode();
@@ -164,9 +166,15 @@ function draw(e)
     }
 }
 
+function draw_stop(e)
+{
+    e.preventDefault();
+    if (e.button == 0)
+        save_state('Pixel changed');
+}
+
 function resize(_top=0, _bottom=0, _left=0, _right=0)
 {
-    save_state('resize');
     let image_data = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
     canvas.width = canvas.width + _left + _right;
@@ -175,33 +183,49 @@ function resize(_top=0, _bottom=0, _left=0, _right=0)
     ctx.putImageData(image_data, _left, _top);
 
     update_papercode();
+    save_state('Resized');
 }
 
-function back()
+// Go back/forward in history
+function change_history(num)
 {
     if (!changes)
         return;
 
-    let change = changes.pop();
+    history_position += num;
+    let change = changes.at(history_position);
+
     canvas.width = change.data.width;
     canvas.height = change.data.height;
     ctx.putImageData(change.data, 0, 0);
+
     update_papercode();
 
-    console.log(`Reverted change "${change.change}".`);
-    if (changes.length == 0)
-        document.getElementById("button_back").disabled = true;
+    console.log(`Reverted to "${change.change}".`);
+    update_history_buttons();
 }
 
+// Save history state
 function save_state(change="Not specified")
 {
-    document.getElementById("button_back").disabled = false;
-
     if (!changes)
         changes = [];
 
+    changes.length = history_position + 1;
+    history_position++;
     changes.push({ "change": change,
                    "data": ctx.getImageData(0, 0, canvas.width, canvas.height)});
 
-    console.log('saved state');
+    console.log(`Saved state "${change}"`);
+    update_history_buttons();
+}
+
+
+function update_history_buttons()
+{
+    document.getElementById("button_forward").disabled = history_position < changes.length - 1 ? false : true;
+    document.getElementById("button_back").disabled = history_position > 0 ? false : true;
+
+    document.getElementById("button_forward").title = history_position < changes.length - 1 ? `Go forward to "${changes.at(history_position+1).change}"` : "Can't go forward in history.";
+    document.getElementById("button_back").title = history_position > 0 ? `Go back to "${changes.at(history_position-1).change}"` : "Can't go back in history.";
 }
