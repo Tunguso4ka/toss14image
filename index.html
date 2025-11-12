@@ -20,12 +20,28 @@
     <body>
         <div class="buttons">
             <button id="button_copy" title="Copy to clipboard" onclick="copy()">Copy to clipboard</button>
-            <button id="button_toggle_rgb" title="Toggle RGB/RRGGBB" onclick="toggle_rgb()" style="width: 7ch">#RGB</button>
+            <button id="button_toggle_rgb" title="Toggle RGB/RRGGBB" onclick="toggle_rgb()" style="width: 9ch">#RGB</button>
             <input type="color" id="input_color" value="#00000000"/>
             <input type="file" id="input_image" accept=".png,.avif,.jpg,.jpeg,.jxl,.webp"/>
         </div>
         <div class="content">
+            <span class="canvas_buttons_left">
+                <button onclick="resize(0, 0, 1)">+</button>
+                <button onclick="resize(0, 0, -1)">-</button>
+            </span>
+            <span class="canvas_buttons_top">
+                <button onclick="resize(1)">+</button>
+                <button onclick="resize(-1)">-</button>
+            </span>
             <canvas id="canvas_drawing" oncontextmenu="return false;" width="21" height="21">Your browser doesn't support canvas, or you toggled it off</canvas>
+            <span class="canvas_buttons_bottom">
+                <button onclick="resize(0, 1)">+</button>
+                <button onclick="resize(0, -1)">-</button>
+            </span>
+            <span class="canvas_buttons_right">
+                <button onclick="resize(0, 0, 0, 1)">+</button>
+                <button onclick="resize(0, 0, 0, -1)">-</button>
+            </span>
             <p id="text_imageinfo">21px:21px</p>
         </div>
         <p id="text_papercode">Paste new image</p>
@@ -47,5 +63,5 @@
                 <li>You can change colors via LMB and copy colors via RMB. (Color picker doesnt support transparent colors, blame W3 Consortium)</li>
             </ol>
         </div>
-    <body/>
+    </body>
 </html>

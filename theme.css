@@ -28,7 +28,7 @@ button {
     min-width: 1em;
     min-height: 1em;
     padding: 0.5em;
-    margin: 0.1em
+    margin: 0.1em;
 }
 
 button:hover {
@@ -38,26 +38,65 @@ button:hover {
 
 .buttons {
     display: flex;
-    margin: 0px 3px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .buttons * {
-    margin: 0px 2px;
+    margin: 2px;
     align-content: center;
 }
 
 .content {
-    display: block;
+    display: grid;
     margin: 5px;
-    align-content: center;
-    text-align: center;
-    flex: auto;
+    grid-gap: 0 5px;
+    grid-template-columns: 3em min-content 3em;
+    grid-template-rows: 3em min-content 3em;
+    justify-content: center;
+}
+
+.canvas_buttons_bottom, .canvas_buttons_left, .canvas_buttons_right, .canvas_buttons_top {
+    display: flex;
+    width: 2.5em;
+    align-self: center;
+}
+.canvas_buttons_top, .canvas_buttons_bottom {
+    grid-column: 2;
+    justify-self: center;
+    justify-content: center;
+}
+.canvas_buttons_left, .canvas_buttons_right {
+    flex-direction: column;
+    grid-row: 2;
+}
+
+.canvas_buttons_top {
+    grid-row: 1;
+}
+.canvas_buttons_bottom {
+    grid-row: 3;
+}
+.canvas_buttons_left {
+    grid-column: 1;
+    justify-self: right;
+}
+.canvas_buttons_right {
+    grid-column: 3;
+    justify-self: left;
 }
 
 #canvas_drawing {
+    grid-row: 2;
+    grid-column: 2;
     image-rendering: pixelated;
-    border: 1px solid #FFFFFF;
-    zoom: 20;
+    border: 5px solid var(--light);
+    justify-self: center;
+    align-self: center;
+    height: 50vmin;
+    
+    background-image: repeating-conic-gradient(transparent 0% 25%, #CAE9FF60 25% 50%);
+    background-size: 200px 200px;
 }
 
 #input_color {
@@ -83,4 +122,10 @@ button:hover {
     border-radius: 8px;
     color: var(--dark);
     padding: 1em;
+}
+
+#text_imageinfo {
+    grid-row: 4;
+    grid-column: 2;
+    justify-self: center;
 }

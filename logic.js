@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function()
     canvas = document.getElementById("canvas_drawing");
     ctx = canvas.getContext('2d');
     canvas.addEventListener('mousedown', draw);
-    // TODO touch start
     canvas.addEventListener('mousemove', draw);
 
 }, false);
@@ -122,12 +121,16 @@ function toggle_rgb()
 {
     var button_toggle_rgb = document.getElementById("button_toggle_rgb");
     color_rgb = !color_rgb;
-    if (color_rgb)
-        button_toggle_rgb.textContent = "#RGB";
-    else
-        button_toggle_rgb.textContent = "#RRGGBB";
+
+    button_toggle_rgb.textContent = color_rgb ? "#RGB" : "#RRGGBB";
 
     update_papercode();
+}
+
+function round(number, at=0.75)
+{
+    // Custom Math.round, cuz standard kinda sucks ass for drawing
+    return (number - Math.trunc(number)) > at ? Math.ceil(number) : Math.floor(number);
 }
 
 function draw(e)
@@ -136,8 +139,8 @@ function draw(e)
     if (e.buttons == 0)
         return;
 
-    var point = { x: Math.floor(e.offsetX / 20),
-                  y: Math.floor(e.offsetY / 20)};
+    var point = { x: round(e.offsetX / (canvas.offsetWidth / canvas.width)),
+                  y: round(e.offsetY / (canvas.offsetHeight / canvas.height))};
 
     const pixel = ctx.getImageData(point.x, point.y, 1, 1);
     if (e.buttons == 1)
@@ -151,4 +154,16 @@ function draw(e)
         color_selected = rgb_to_hex(pixel.data, true);
         input_color.value = color_selected;
     }
+}
+
+function resize(_top=0, _bottom=0, _left=0, _right=0)
+{
+    let image_data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+    canvas.width = canvas.width + _left + _right;
+    canvas.height = canvas.height + _top + _bottom;
+
+    ctx.putImageData(image_data, _left, _top);
+
+    text_imageinfo.textContent = `${canvas.width}px:${canvas.height}px; ${text_papercode.textContent.length} symbols;`
 }
