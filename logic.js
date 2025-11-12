@@ -53,7 +53,7 @@ function on_new_image()
     {
         if (image.width > 100 || image.height > 100)
         {
-            alert(`Your image is too large, crop it first: ${image.width}x${image.height}\n(Look at #How to use)`);
+            alert(`Your image is too large (${image.width}x${image.height}), crop it first.\n(Look at #How to use)`);
             return;
         }
         requestAnimationFrame(update_canvas);

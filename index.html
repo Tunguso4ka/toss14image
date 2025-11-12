@@ -19,10 +19,10 @@
     </head>
     <body>
         <div class="buttons">
-            <button id="button_copy" title="Copy to clipboard" onclick="copy()">Copy to clipboard</button>
+            <button id="button_copy" title="Copy text to clipboard." onclick="copy()">📋Copy</button>
             <button id="button_back" disabled title="Go back in history (revert changes)" onclick="change_history(-1)">↩️</button>
             <button id="button_forward" disabled title="Go forward in history." onclick="change_history(1)">↪️</button>
-            <button id="button_toggle_rgb" title="Toggle RGB/RRGGBB" onclick="toggle_rgb()" style="width: 9ch">#RGB</button>
+            <button id="button_toggle_rgb" title="Toggle between Small #RGB/ Full #RRGGBB" onclick="toggle_rgb()" style="width: 9ch">#RGB</button>
             <input type="color" id="input_color" value="#00000000" title="#00000000"/>
             <input type="file" id="input_image" accept=".png,.avif,.jpg,.jpeg,.jxl,.webp"/>
         </div>
