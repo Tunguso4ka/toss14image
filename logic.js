@@ -14,6 +14,8 @@ var ctx;
 
 var papercode;
 
+var changes = [];
+
 document.addEventListener('DOMContentLoaded', function()
 {
     input_image = document.getElementById("input_image");
@@ -27,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function()
     input_color = document.getElementById("input_color");
     input_color.addEventListener('change', e => {
         color_selected = input_color.value;
+        input_color.title = color_selected;
     });
 
     text_imageinfo = document.getElementById("text_imageinfo");
@@ -101,6 +104,8 @@ function update_papercode()
 
 function update_canvas()
 {
+    save_state('canvas update');
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     canvas.width = image.naturalWidth;
     canvas.height = image.naturalHeight;
@@ -145,6 +150,8 @@ function draw(e)
     const pixel = ctx.getImageData(point.x, point.y, 1, 1);
     if (e.buttons == 1)
     {
+        if (e.movementX == 0 && e.movementY == 0)
+            save_state('pixel change');
         update_data(pixel.data, color_selected.slice(1));
         ctx.putImageData(pixel, point.x, point.y);
         update_papercode();
@@ -153,11 +160,13 @@ function draw(e)
     {
         color_selected = rgb_to_hex(pixel.data, true);
         input_color.value = color_selected;
+        input_color.title = color_selected;
     }
 }
 
 function resize(_top=0, _bottom=0, _left=0, _right=0)
 {
+    save_state('resize');
     let image_data = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
     canvas.width = canvas.width + _left + _right;
@@ -165,5 +174,34 @@ function resize(_top=0, _bottom=0, _left=0, _right=0)
 
     ctx.putImageData(image_data, _left, _top);
 
-    text_imageinfo.textContent = `${canvas.width}px:${canvas.height}px; ${text_papercode.textContent.length} symbols;`
+    update_papercode();
+}
+
+function back()
+{
+    if (!changes)
+        return;
+
+    let change = changes.pop();
+    canvas.width = change.data.width;
+    canvas.height = change.data.height;
+    ctx.putImageData(change.data, 0, 0);
+    update_papercode();
+
+    console.log(`Reverted change "${change.change}".`);
+    if (changes.length == 0)
+        document.getElementById("button_back").disabled = true;
+}
+
+function save_state(change="Not specified")
+{
+    document.getElementById("button_back").disabled = false;
+
+    if (!changes)
+        changes = [];
+
+    changes.push({ "change": change,
+                   "data": ctx.getImageData(0, 0, canvas.width, canvas.height)});
+
+    console.log('saved state');
 }

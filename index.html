@@ -20,8 +20,9 @@
     <body>
         <div class="buttons">
             <button id="button_copy" title="Copy to clipboard" onclick="copy()">Copy to clipboard</button>
+            <button id="button_back" disabled=True title="Revert image to previous state" onclick="back()">Back</button>
             <button id="button_toggle_rgb" title="Toggle RGB/RRGGBB" onclick="toggle_rgb()" style="width: 9ch">#RGB</button>
-            <input type="color" id="input_color" value="#00000000"/>
+            <input type="color" id="input_color" value="#00000000" title="#00000000"/>
             <input type="file" id="input_image" accept=".png,.avif,.jpg,.jpeg,.jxl,.webp"/>
         </div>
         <div class="content">
@@ -44,8 +45,8 @@
             </span>
             <p id="text_imageinfo">21px:21px</p>
         </div>
-        <p id="text_papercode">Paste new image</p>
-        <div>
+        <p id="text_papercode">Paste new image or draw something new!</p>
+        <div class="facts">
             <p>Some paper facts:</p>
             <ul>
                 <li>SS14 Paper supports upto 6 000 symbols per paper. (Including tags) (RMC14 supports 10 000 symbols)</li>
