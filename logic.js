@@ -178,7 +178,9 @@ function resize(_top=0, _bottom=0, _left=0, _right=0)
     let image_data = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
     canvas.width = canvas.width + _left + _right;
+    canvas.width = canvas.width <= 0 ? 1 : canvas.width;
     canvas.height = canvas.height + _top + _bottom;
+    canvas.height = canvas.height <= 0 ? 1 : canvas.height;
 
     ctx.putImageData(image_data, _left, _top);
 

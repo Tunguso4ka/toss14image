@@ -9,7 +9,7 @@
     font-family: "Monospace";
 }
 
-html, body {
+html {
     background-color: var(--dark);
 }
 
@@ -150,7 +150,7 @@ button:enabled:hover {
         grid-row: 3;
     }
     #canvas_drawing {
-        height: 50vmax;
+        width: 40vmax;
     }
 }
 
@@ -177,6 +177,6 @@ button:enabled:hover {
         grid-column: 2;
     }
     #canvas_drawing {
-        height: 50vmin;
+        width: 30vmin;
     }
 }
